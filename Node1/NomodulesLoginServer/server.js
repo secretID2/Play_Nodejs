@@ -13,13 +13,19 @@ function makeid() {
 
   return text;
 }
-function CompareStrings(s1,s2){
-    if(s1.length>){
-       
-    }
-    else{
-           
-    }
+function compareStrings(st1,st2){
+			var compare=false;
+			var n=0;
+			for(i=0;i<st1.length;i++){
+				if(st1[i]==st2[i])
+					n++;
+				else
+					break;
+			}
+			if(n==st1.length)
+				compare=true;
+				
+			return compare	
 }
 function parser(data){
     var d={};
@@ -68,14 +74,17 @@ function checklogin(username,pass){
                 return true;
             }
         }*/
-         console.log(key+":"+users[key]);
+        console.log(key+":"+users[key]);
         console.log(key+":"+users[key]);
         console.log(key+":"+users[key]);
         //console.log(key.localeCompare(username)==0);
         //console.log(users[key].localeCompare(pass)==0);
         //console.log("key:"+key+"; username:"+username);
         //console.log("key pass:"+users[key]+"; test_pass:"+pass);
-        if(key.localeCompare(username)==0 && users[key].localeCompare(pass)==0){
+        /*if(key.localeCompare(username)==0 && users[key].localeCompare(pass)==0){
+            return true;
+        }*/
+        if(compareStrings(key,username) && compareStrings(users[key],pass)){
             return true;
         }
     }
