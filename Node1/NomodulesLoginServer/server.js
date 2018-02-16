@@ -38,14 +38,20 @@ function loadDB(){
 
 
 function checklogin(username,pass){
-    for(key in users){
+    for(var key in users){
+        /*console.log("key:"+key+"; username:"+username);
+        console.log("key pass:"+users[key]+"; test_pass:"+pass);
         if(key.localeCompare(username)==0){
-            console.log("key:"+key+"; username:"+username);
-            console.log("key pass:"+users[key]+"; test_pass:"+pass);
+            console.log("UsernameMatch");
             if(users[key].localeCompare(pass)==0){
-                console.log("key pass:"+users[key]+"; test_pass:"+pass);
+                console.log("pass match");
                 return true;
             }
+        }*/
+        console.log("key:"+key+"; username:"+username);
+        console.log("key pass:"+users[key]+"; test_pass:"+pass);
+        if(key.localeCompare(username)==0 && users[key].localeCompare(pass)==0){
+            return true;
         }
     }
     return false;
