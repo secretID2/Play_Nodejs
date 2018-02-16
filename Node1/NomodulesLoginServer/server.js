@@ -3,7 +3,24 @@ var http = require('http');
 var fs = require('fs');
 var error=1;
 var users={};
+var clients={};
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+  for (var i = 0; i < 15; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+function CompareStrings(s1,s2){
+    if(s1.length>){
+       
+    }
+    else{
+           
+    }
+}
 function parser(data){
     var d={};
     var vars=data.split("&");
@@ -14,6 +31,9 @@ function parser(data){
                                    
                 });
     return d;
+}
+function parseCookie(cookie){
+    
 }
 function loadDB(){
     fs.readFile("./DB.txt",'utf8',function(error,data){
@@ -28,7 +48,7 @@ function loadDB(){
             users[line.split(",")[0]]=line.split(",")[1];
         });
         for(key in users){
-            console.log(key+":"+users[key]);
+            console.log(users[key]);
         }
         
     });
@@ -48,8 +68,13 @@ function checklogin(username,pass){
                 return true;
             }
         }*/
-        console.log("key:"+key+"; username:"+username);
-        console.log("key pass:"+users[key]+"; test_pass:"+pass);
+         console.log(key+":"+users[key]);
+        console.log(key+":"+users[key]);
+        console.log(key+":"+users[key]);
+        //console.log(key.localeCompare(username)==0);
+        //console.log(users[key].localeCompare(pass)==0);
+        //console.log("key:"+key+"; username:"+username);
+        //console.log("key pass:"+users[key]+"; test_pass:"+pass);
         if(key.localeCompare(username)==0 && users[key].localeCompare(pass)==0){
             return true;
         }
@@ -83,6 +108,7 @@ http.createServer(function (request, response) {
                     return response.end();
                 }
                 console.log("read file"+data);
+                
                 response.writeHead(200, {'Content-Type': 'text/html'});
                 //response.write(data,function(err){return response.end();});
                 response.write(data);
@@ -122,8 +148,10 @@ http.createServer(function (request, response) {
                     
                         var data = parser(body);
                         if(checklogin(data['username'],data['pass'])){
-                            response.writeHead(200);
-                            return response.end(data['username']+" is logged in!");   
+                            var securehash= makeid();
+                            clients[data['username']]=securehash;
+                            response.writeHead(302,{'Set-Cookie':data['username']+'='+securehash,'Location':"restricted"});
+                            return response.end();   
                         }
                         else{
                             response.writeHead(200);
@@ -134,6 +162,27 @@ http.createServer(function (request, response) {
                 
                 });
 
+        }
+        
+        if(request.url=="/restricted"){
+            const { headers } = request;
+            console.log(headers.cookie);
+            var cookie=headers.cookie;
+            var username=cookie.split("=")[0];
+            var secret=cookie.split("=")[1];
+            for(key in clients){
+                console.log(key+" "+clients[key]);
+                if(key.localeCompare(username)==0){
+                    console.log("Username match  "+clients[key]);
+                    if(clients[key].localeCompare(secret)==0){
+                        console.log("valid user");
+                        response.writeHead(200);
+                        return response.end(username+" is logged in!"); 
+                    }
+                }
+            }
+            response.writeHead(200);
+            return response.end("Access denied"); 
         }
     
     /*if(error==1){
