@@ -98,7 +98,7 @@ function loadDB(){
 }*/
 function CheckValidClient(username,secure_hash){
     for (key in clients){
-        //here it does not have the sam eproblem as checklogin because I think here every think is really a string but in check login they were bytes???s
+        //here it does not have the same eproblem as checklogin because I think here everything is really a string but in check login they were bytes???
         if(key.localeCompare(username)==0 && clients[key].localeCompare(secure_hash)==0){
             return true;
         }
