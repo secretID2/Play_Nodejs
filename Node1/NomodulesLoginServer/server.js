@@ -76,7 +76,7 @@ function checklogin(username,pass){
         }*/
         console.log(key+":"+users[key]);
         console.log(key+":"+users[key]);
-        console.log(key+":"+users[key]);
+        console.log(pass+":"+users[key]);
         //console.log(key.localeCompare(username)==0);
         //console.log(users[key].localeCompare(pass)==0);
         //console.log("key:"+key+"; username:"+username);
@@ -84,7 +84,9 @@ function checklogin(username,pass){
         /*if(key.localeCompare(username)==0 && users[key].localeCompare(pass)==0){
             return true;
         }*/
-        if(compareStrings(key,username) && compareStrings(users[key],pass)){
+        test_pass=users[key][0];
+        console.log(pass+"="+users[key]);
+        if(compareStrings(key,username) && compareStrings(pass,users[key])){
             return true;
         }
     }
