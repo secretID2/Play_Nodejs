@@ -8,7 +8,7 @@ function makeid() {
   var text = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for (var i = 0; i < 15; i++)
+  for (var i = 0; i < 50; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
 
   return text;
@@ -22,7 +22,7 @@ function compareStrings(st1,st2){
 				else
 					break;
 			}
-			if(n==st1.length)
+			if(n==st1.length && st1.length==st2.length)
 				compare=true;
 				
 			return compare	
@@ -54,7 +54,7 @@ function loadDB(){
             users[line.split(",")[0]]=line.split(",")[1];
         });
         for(key in users){
-            console.log(users[key]);
+            console.log(key+":"+users[key]);
         }
         
     });
@@ -74,24 +74,30 @@ function checklogin(username,pass){
                 return true;
             }
         }*/
-        console.log(key+":"+users[key]);
-        console.log(key+":"+users[key]);
-        console.log(pass+":"+users[key]);
+        //console.log(key+":"+users[key]);
+        //console.log(key+":"+users[key]);
+        //console.log(pass+":"+users[key]);
         //console.log(key.localeCompare(username)==0);
         //console.log(users[key].localeCompare(pass)==0);
         //console.log("key:"+key+"; username:"+username);
         //console.log("key pass:"+users[key]+"; test_pass:"+pass);
-        /*if(key.localeCompare(username)==0 && users[key].localeCompare(pass)==0){
+        /*if(key.localeCompare(username)==0 && pass.localeCompare(users[key])==0){
             return true;
         }*/
-        test_pass=users[key][0];
-        console.log(pass+"="+users[key]);
+        
+        //console.log(pass+"="+users[key]);
         if(compareStrings(key,username) && compareStrings(pass,users[key])){
             return true;
         }
     }
     return false;
 }
+/*function CheckValidClient(){
+    for (key in clients){
+        if(key)
+    }
+    return false;
+}*/
 
 loadDB();
 
@@ -156,7 +162,7 @@ http.createServer(function (request, response) {
                 });
                 console.log(body);
                 request.on('end', function() {
-                    
+                        //parser returns a dictionary with all the variables values
                         var data = parser(body);
                         if(checklogin(data['username'],data['pass'])){
                             var securehash= makeid();
