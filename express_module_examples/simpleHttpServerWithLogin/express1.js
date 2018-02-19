@@ -5,7 +5,7 @@ var fs = require('fs');
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+//app.use(express.cookieParser());
 
 //----global vars-----
 var users={};
@@ -112,6 +112,9 @@ app.get("/restricted",function(req,res){
             const { headers } = req;
             console.log(headers.cookie);
             var cookie=headers.cookie;
+            if(cookie==null){
+                res.send("Access Denied!");
+            }
             var username=cookie.split("=")[0];
             var secret=cookie.split("=")[1];
             if(CheckValidClient(username,secret)){
@@ -123,6 +126,27 @@ app.get("/restricted",function(req,res){
                 return res.end("Access denied"); 
             }
 });
+//no security serving static files
+app.use('/images', express.static('pages/images'));
+
+app.get("/restricted/:page",function(req,res){
+    filepath=__dirname+"/pages/"+req.params.page;
+    const { headers } = req;    
+    console.log(headers.cookie);
+    var cookie=headers.cookie;
+    if(cookie==null){
+            res.send("Access Denied!");
+    }
+    var username=cookie.split("=")[0];
+    var secret=cookie.split("=")[1];
+    if(CheckValidClient(username,secret)){
+        res.sendFile(filepath);
+    }
+    else{
+        res.send("Access Dinied");
+    }
+});
+
 
 app.listen(80, function() {
   console.log('Example app listening on port 80!');
