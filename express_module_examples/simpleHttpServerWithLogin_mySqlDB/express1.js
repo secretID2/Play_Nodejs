@@ -119,8 +119,7 @@ app.post('/login',function(req,res){
     var username=req.body.username;
     var pass=req.body.pass;
     //check if user pass is correct
-    con.connect(function(err) {
-        if (err) throw err;
+    
         con.query("SELECT * FROM info where username='"+username+"';", function (err, result, fields) {
             if (err) throw err;
             //console.log(result[0]);
@@ -138,7 +137,7 @@ app.post('/login',function(req,res){
             }
         });
         
-    });
+    
     
     
     /*if(checklogin(username,pass)){
