@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ChatRooms</title>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+</head>
+<body>
+<h2>Welcome to the website</h2>
+<h3>Create Chat Room</h3>
+	
+		Room Name: <input id="roomName" name="roomName" type="text"  />
+		Password: <input id="roomPass" name="password" type="password"  />
+		<input id="createRoom" value="CreateRoom" type="submit" />
+	
+	<div id="ChatRooms">
+	
+	</div>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+	<script>
+        
+		document.onload=LoadRooms();
+		function LoadRooms(){
+			
+			//DeleteAllCookies();
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					$("#ChatRooms").append(this.response);
+				
+				}
+			};
+			xhttp.open("GET", "loadRooms", true);
+			xhttp.send();
+
+			
+
+		}
+        function DealWithWebSockets(){
+            var socket = io();
+            socket.emit('give me rooms', 'need rooms!');
+            $('#createRoom').onclick(function(){
+                socket.emit('creatRoom')
+            });
+        }
+		function DeleteAllCookies()
+        {
+			Cookie=document.cookie;
+            console.log(Cookie.localeCompare('')!=-1);
+			//if  not empty
+			if(Cookie.localeCompare('')!=-1){
+				cookies=Cookie.split(';');
+                console.log(cookies);
+				var cookies_names=[];
+				cookies.forEach(function(cookie){cookies_names.push(cookie.split('=')[0]);}); 
+				//deleting cookies
+                console.log(cookies_names);
+				cookies_names.forEach(function(name){document.cookie=name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';});
+				//cookies_names.forEach(function(name){$.cookie(name, null, { path: '/' });});
+			}
+        }
+	</script>	
+</body>
+</html>
