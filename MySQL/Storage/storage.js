@@ -174,7 +174,7 @@ app.get("/restricted",function(req,res){
             var secret=cookie.split("=")[1];
             if(CheckValidClient(username,secret)){
                 //res.sendFile(__dirname+"/pages/restricted.html");
-                res.render('restricted');
+                res.render('restricted',{title:"This is Stuff",welcome_msg:'I dont like Jade!!!!'});
                 
             }
             else{
