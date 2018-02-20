@@ -14,12 +14,15 @@ io.on('connection', function(socket){
     console.log("Connected to websocket:"+socket.id); 
     clients.push(socket.id);
   socket.on('chat message', function(msg){
-     
+     //ONLY NEED THIS LINE TO WORK BUT WANT TO SEND INDIVIDUALY
     //io.emit('chat message', msg);
     
+    clients.forEach(function(client){
+        io.sockets.connected[client].emit("chat message", msg);
         
-    io.sockets.connected[clients[0]].emit("chat message", "Howdy, User 1!");
-    io.sockets.connected[clients[1]].emit("chat message", "Hey there, User 2");
+    });    
+    //io.sockets.connected[clients[0]].emit("chat message", "Howdy, User 1!");
+    //io.sockets.connected[clients[1]].emit("chat message", "Hey there, User 2");
         
      
     
