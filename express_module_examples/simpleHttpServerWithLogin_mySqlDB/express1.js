@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 var out=null;
 var users={};
 var clients={};
-var con = mysql.createConnection({
+var con = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "",
