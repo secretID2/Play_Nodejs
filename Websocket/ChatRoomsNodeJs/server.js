@@ -95,12 +95,15 @@ app.get('/', function(req, res) {
 });
 
 app.post('/accessRoom/:roomName',function(req,res){
-    console.log('tring to acess room');
+    
     var roomName=req.params.roomName;
     var pass=req.body.roomPass;
+    console.log('tring to acess room'+pass);
     if(pass.localeCompare(chatRooms[roomName])==0){
         //valid user
-        res.writeHead(302,{'Set-Cookie':'','Location':'/'+roomName});
+        //var enc=encrypt(pass);
+        //res.writeHead(302,{'Set-Cookie':roomName+'='+pass,'Location':'/'+roomName});
+        res.writeHead(302,{'Location':'/'+roomName});
         res.end();
     }
     else{
@@ -109,10 +112,12 @@ app.post('/accessRoom/:roomName',function(req,res){
     
 });
 
-app.get('/:roomName',function(req,res){
+/*app.get('/:roomName',function(req,res){
+    
     roomName=req.params.roomName;
+    console.log('Entering:'+roomName)
     if(roomName.localeCompare('')==0){
-        
+        res.send("Error entering room!");
     }
     else{
         
@@ -131,7 +136,11 @@ app.get('/:roomName',function(req,res){
         }
     }
     
+});*/
+app.get('/:roomName',function(req,res){
+    res.sendFile(__dirname+'/chat.html');
 });
+
 app.post('/createRoom',function(req,res){
     var room_name=req.body.roomName;
     var room_pass=req.body.roomPass;
@@ -144,12 +153,12 @@ app.post('/createRoom',function(req,res){
     }
     chatRooms[room_name]=room_pass;
     var clients=[];
-    clients.push(socket.id);
+    //clients.push(socket.id);
     RoomUsers[room_name]=clients;
     var log=[];
     RoomLog[room_name]=log;
     
-    res.writeHead(302,{'Set-Cookie':'roomName='+encrypt(room_pass),'Location':'/'+room_name});
+    res.writeHead(302,{'Set-Cookie':'roomName='+room_pass,'Location':'/'+room_name});
     res.end();
 });
 
@@ -165,23 +174,15 @@ io.on('connection', function(socket){
     socket.emit('give me rooms', RoomsNamesToCSV());
     //clients.push(socket.id);
     socket.on('give me rooms', function(msg){
-             //io.emit to send to all socket.emit to send to individual
              socket.emit('give me rooms', RoomsNamesToCSV());
-
-            /*clients.forEach(function(client){
-                io.sockets.connected[client].emit("chat message", msg);
-
-            });    */
-            //io.sockets.connected[clients[0]].emit("chat message", "Howdy, User 1!");
-            //io.sockets.connected[clients[1]].emit("chat message", "Hey there, User 2");
 
     });
     
     
-    /*socket.on('disconnect', function () {
+    socket.on('disconnect', function () {
         //io.emit('user disconnected');
         console.log("user:"+socket.id+" disconnected!");
-    });    */
+    });    
     
 });
     
