@@ -158,7 +158,8 @@ app.post('/createRoom',function(req,res){
     var log=[];
     RoomLog[room_name]=log;
     
-    res.writeHead(302,{'Set-Cookie':'roomName='+room_pass,'Location':'/'+room_name});
+    //res.writeHead(302,{'Set-Cookie':'roomName='+room_pass,'Location':'/'+room_name});
+    res.writeHead(302,{'Location':'/'+room_name});
     res.end();
 });
 
