@@ -17,13 +17,17 @@
     <form id="send-message">
         <input id="name" type="text" value="name">
         <input id="message" type="text" value="message" />
-        <input type="submit" value="Send" />
+        <button id="Send">Send</button> 
     </form>
     <textarea id="messages" style="width:400px;height:150px;"></textarea>
     <script>
         var socket=io();
         socket.on('mesasge',function(msg){
             $('#messages').html(msg);
+        });
+        $('#Send').onclick(function(){
+            socket.emit("message",$('#name').val()+': '+$('#message').val());
+            $('#message').html()='';
         });
 		
     </script>
