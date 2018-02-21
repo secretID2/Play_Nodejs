@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>WebSocket Chat</title>
+
+    <style>
+        li { list-style: none; }
+    </style>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    
+</head>
+<body>
+    <h2>WebSocket Chat Example</h2>
+    <form id="send-message">
+        <input id="name" type="text" value="name">
+        <input id="message" type="text" value="message" />
+        <button id="Send">Send</button> 
+    </form>
+    <textarea id="messages" style="width:400px;height:150px;"></textarea>
+    <script>
+        var socket=io();
+        socket.on('message',function(msg){
+            $('#messages').append(msg);
+        });
+        $('#Send').click(function(){
+            socket.emit("message",$('#name').val()+': '+$('#message').val());
+            $('#message').html()='';
+        });
+		
+    </script>
+</body>
+</html>

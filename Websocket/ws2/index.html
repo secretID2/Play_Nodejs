@@ -1,26 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Basic websocket app</title>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <p id="print"></p>
-    <p id="info"></p>  
+<head>
+  <title>ChatRooms</title>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+</head>
+<body>
+<h2>Welcome to the website</h2>
+<h3 id="UsefullMsg">Create Chat Room</h3>
+	
+		<form action="/createRoom" method="post">
+            Room Name: <input name="roomName" type="text"  />
+            Password: <input name="roomPass" type="password"  />
+            <input value="Enter" type="submit" />
+	   </form>
+	
+	<div id="ChatRooms">
+	
+	</div>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-      function Start(){
-          
-        var socket = io();
+	<script>
+        var firsttime=true;
+		document.onload=LoadRooms();
+		function LoadRooms(){
+			
+			//DeleteAllCookies();
+            DealWithWebSockets();
+			/*var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					$("#ChatRooms").append(this.response);
+				
+				}
+			};
+			xhttp.open("GET", "loadRooms", true);
+			xhttp.send();*/
+
+			
+
+		}
+        function DealWithWebSockets(){
+            
+            var socket = io();
+            /*if(firsttime){
+                socket.emit('give me rooms', 'need rooms!');
+                firsttime=false;
+            }*/
+            
+            socket.on('give me rooms',function(msg){
+                roomNames=msg.split('\t');var out='';
+                roomNames.forEach(function(room_name){
+                    out+='<form action="/'+room_name+'" method="get">';
+                    
+                    //out+='<input name="roomName" value="'+room_name+'" type="text" style="hidden"/>'
+                    out+='<br><input value="Enter ChatRoom->'+room_name+'" type="submit" /><br><br>'
+                    out+='</form><br>'
+                });
+                document.getElementById('ChatRooms').innerHTML=out;
+            });
+        }
+            /*socket.on('disconnect',function(){
+                document.getElementById('UsefullMsg').innerHTML='<font color="red">Webscoket disconnected</font>';
+            });*/
         
-        socket.on('date', function(msg){
-          $('#print').html(msg);
-          
-        });
-      }
-      window.onload=Start();    
-      
-    </script>
-  </body>
+		function DeleteAllCookies()
+        {
+			Cookie=document.cookie;
+            console.log(Cookie.localeCompare('')!=-1);
+			//if  not empty
+			if(Cookie.localeCompare('')!=-1){
+				cookies=Cookie.split(';');
+                console.log(cookies);
+				var cookies_names=[];
+				cookies.forEach(function(cookie){cookies_names.push(cookie.split('=')[0]);}); 
+				//deleting cookies
+                console.log(cookies_names);
+				cookies_names.forEach(function(name){document.cookie=name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';});
+				//cookies_names.forEach(function(name){$.cookie(name, null, { path: '/' });});
+			}
+        }
+	</script>	
+</body>
 </html>
