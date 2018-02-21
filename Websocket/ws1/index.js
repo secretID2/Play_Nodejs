@@ -13,7 +13,7 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
     console.log("Connected to websocket:"+socket.id); 
     //clients.push(socket.id);
-    setInterval(function(){socket.emit('date',new Date())},100);
+    setInterval(function(){socket.emit('date',new Date())},1000);
     
     //io.sockets.connected[clients[0]].emit("chat message", "Howdy, User 1!");
     //io.sockets.connected[clients[1]].emit("chat message", "Hey there, User 2");
