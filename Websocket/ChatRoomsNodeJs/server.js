@@ -15,7 +15,7 @@ var crypto = require('crypto'),
     password = 'd6F3Efeq';
 
 //global vars
-var chatRooms={'1':'123'};
+var chatRooms={'1':'123','2w':'222'};
 var RoomUsers={};
 var RoomLog={};
 
@@ -80,15 +80,12 @@ function CheckValidClient(username,secure_hash){
 }
 function RoomsNamesToCSV(){
     var out='';
-    for(i=0;i<chatRooms.length;i++){
+    for(roomName in chatRooms){
         //last room
-        if(i==chatRooms.length-1){
-            out+=chatRooms[i];
-        }
-        else{
-            out+=chatRooms+'\t';
-        }
+       out+=roomName+'\t';
     }
+    //take out the last 2 characters
+    out=out.substr(0,out.length-1);
     return out;
 }
 //Main-------------------
@@ -98,6 +95,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/accessRoom/:roomName',function(req,res){
+    console.log('tring to acess room');
     var roomName=req.params.roomName;
     var pass=req.body.roomPass;
     if(pass.localeCompare(chatRooms[roomName])==0){
@@ -164,7 +162,7 @@ http.listen(port, function(){
 //Handling websockets
 io.on('connection', function(socket){
     console.log("Connected to websocket:"+socket.id);
-    
+    socket.emit('give me rooms', RoomsNamesToCSV());
     //clients.push(socket.id);
     socket.on('give me rooms', function(msg){
              //io.emit to send to all socket.emit to send to individual
