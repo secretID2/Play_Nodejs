@@ -47,7 +47,8 @@
                 socket.emit('give me rooms', 'need rooms!');
                 firsttime=false;
             }*/
-            socket.emit('give me rooms')
+            socket.emit('give me rooms');
+            
             socket.on('give me rooms',function(msg){
                 roomNames=msg.split('\t');var out='';
                 roomNames.forEach(function(room_name){
