@@ -17,6 +17,7 @@ io.on('connection', function(socket){
     
     socket.on('Hi', function (msg) {
         console.log(msg);
+        io.emit('Hi',msg);
     }); 
     //io.sockets.connected[clients[0]].emit("chat message", "Howdy, User 1!");
     //io.sockets.connected[clients[1]].emit("chat message", "Hey there, User 2");
