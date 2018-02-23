@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
-
+var request = require('request');
 //deal with post
 var bodyParser     =        require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -49,10 +49,33 @@ function RoomsNamesToCSV(){
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
-app.post('/:roomName', function(req, res){
-    console.log(req.body);
+app.post('/createRoom',function(req,res){
+    console.log(req.body+'->create room');
     var roomName=req.body.roomName;
     var pass=req.body.roomPass;
+    res.send(roomName+':'+pass);
+    chatRooms[roomName]=pass;
+    RoomUsers[roomName]={};
+    RoomLog[roomName]=[];
+    
+    
+
+    
+});
+
+app.post('/:roomName', function(req, res){
+    console.log(req.body);
+    
+    var roomName=req.body.roomName;
+    var pass=req.body.roomPass;
+    console.log(chatRooms[roomName]);
+    
+    if(chatRooms[roomName]!=null){
+        chatRooms[roomName]=pass;
+        RoomUsers[roomName]={};
+        RoomLog[roomName]=[];
+        console.log('created room');
+    }
     
     if(pass.localeCompare(chatRooms[roomName])==0){
         res.sendFile(__dirname + '/chat.html');
@@ -64,12 +87,6 @@ app.post('/:roomName', function(req, res){
  
 });
 
-app.post('/createRoom',function(req,res){
-    console.log(req.body);
-    var roomName=req.body.roomName;
-    var pass=req.body.roomPass;
-    res.send(roomName+':'+pass);
-});
 
 app.post('/accessRoom/:roomName',function(req,res){
     console.log(req.body);

@@ -9,11 +9,11 @@
 <h2>Welcome to the website</h2>
 <h3 id="UsefullMsg">Create Chat Room</h3>
 	
-		<form action="/createRoom" method="post">
-            Room Name: <input name="roomName" type="text"  />
-            Password: <input name="roomPass" type="password"  />
-            <input value="Enter" type="submit" />
-	   </form>
+		
+            Room Name: <input  id="roomName" type="text"  />
+            Password: <input id="roomPass" type="password"  />
+            <button id="SendPost"  type="submit" >Create Room</button>
+	   
 	<br>
 	<div id="ChatRooms">
 	
@@ -47,6 +47,19 @@
                 socket.emit('give me rooms', 'need rooms!');
                 firsttime=false;
             }*/
+            
+            
+            $("#SendPost").click(function(){
+            $.post('/'+$('#roomName').val(),
+                {
+                    roomName: $('#roomName').val(),
+                    roomPass: $('#roomPass').val()
+                },
+                function(data, status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+            });
+            
             socket.emit('give me rooms');
             
             socket.on('give me rooms',function(msg){
@@ -82,6 +95,7 @@
 				//cookies_names.forEach(function(name){$.cookie(name, null, { path: '/' });});
 			}
         }
+       
 	</script>	
 </body>
 </html>
