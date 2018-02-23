@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Basic websocket app</title>
+  </head>
+  <body>
+    <ul id="nfo"></ul>
+    <p id="print"></p>
+    
+    Name<input id="name" type="text">
+    Msg<input id="message" type="text">
+    <button id='Send'>Send</button><br> 
+    <!--<div id="messages" style="overflow: auto;heigh:110px;width:110px;"></div> --> 
+    <textarea id="messages" style="width:50%;height:200px;"></textarea>
+     
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        var str='';
+        /*function DeleteAllCookies()
+        {
+            Cookie=document.cookie;
+            console.log(Cookie.localeCompare('')!=-1);
+            //if  not empty
+            if(Cookie.localeCompare('')!=-1){
+                cookies=Cookie.split(';');
+                console.log(cookies);
+                var cookies_names=[];
+                cookies.forEach(function(cookie){cookies_names.push(cookie.split('=')[0]);}); 
+                //deleting cookies
+                console.log(cookies_names);
+                cookies_names.forEach(function(name){document.cookie=name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';});
+                //cookies_names.forEach(function(name){$.cookie(name, null, { path: '/' });});
+            }
+        }*/
+        function Start(){
+
+            var socket = io();
+
+            socket.on('date', function(msg){
+              $('#print').html(msg);
+
+            });
+            socket.on('message',function(msg){
+                console.log(msg);
+                str+=msg+'\n';
+                $('#messages').html(str);
+            });  
+            $('#Send').click(function(){
+                socket.emit('message',$('#name').val()+': '+$('#message').val());
+                $('#message').val('');
+
+            });
+             var input = document.getElementById("message");
+            input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                     socket.emit('message',$('#name').val()+': '+$('#message').val());
+                    $('#message').val('');
+                }
+            });
+        }
+      window.onload=Start();    
+      
+    </script>
+  </body>
+</html>
