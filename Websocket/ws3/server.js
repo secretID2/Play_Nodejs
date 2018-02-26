@@ -84,7 +84,8 @@ io.on('connection', function(socket){
         io.emit('message',msg);
     }); 
     socket.on('new room',function(){
-        io.emit('give me rooms',RoomsNamesToCSV());
+        console.log('Someone created new room');
+        setTimeout(function(){io.emit('give me rooms',RoomsNamesToCSV())},1000);
     });
     
     socket.on('give me rooms',function(){
