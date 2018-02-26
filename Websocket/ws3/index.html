@@ -4,25 +4,31 @@
   <title>ChatRooms</title>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-</head>
+</head>    
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <body>
-<h2>Welcome to the website</h2>
-<h3 id="UsefullMsg">Create Chat Room</h3>
-	
-		
-            Room Name: <input  id="roomName" type="text"  />
-            Password: <input id="roomPass" type="password"  />
+    <h2>Welcome to the website</h2>
+    <h3 id="UsefullMsg">Create Chat Room</h3>
+    <div ng-app="">
+        <form action={{roomName}} method="post">
+            RoomName : <input type="text" id="roomName" name="roomName" ng-model="roomName" placeholder="Enter name here">
+            Password: <input id="roomPass" name="roomPass" type="password"  />
             <button id="SendPost"  type="submit" >Create Room</button>
-	   
-	<div style="background-color: lightblue;height: 10px;width:100%;"><div><br>
-	<div id="ChatRooms">
+        </form>
+        
+        
+        <p value={{roomName}}></p>
+        
+
+        <h1>Hello {{roomName}}</h1>
+
+    </div>
+    <div id="ChatRooms">
 	
 	</div>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    
-	<script>
-        var firsttime=true;
-		document.onload=Start();
+     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script>
+        document.onload=Start();
 		function Start(){
 			
 			//DeleteAllCookies();
@@ -90,6 +96,8 @@
 			}
         }
        
-	</script>	
+    
+    </script>
+
 </body>
 </html>
