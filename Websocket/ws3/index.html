@@ -14,7 +14,7 @@
             Password: <input id="roomPass" type="password"  />
             <button id="SendPost"  type="submit" >Create Room</button>
 	   
-	<br>
+	<div style="background-color: lightblue;height: 10px;width:100%;"><div><br>
 	<div id="ChatRooms">
 	
 	</div>
@@ -56,7 +56,11 @@
                     roomPass: $('#roomPass').val()
                 },
                 function(data, status){
-                    alert("Data: " + data + "\nStatus: " + status);
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    if(data!=null){
+                        //$.post("/"+$('#roomName').val(),{roomName: $('#roomName').val(),roomPass: //$('#roomPass').val()});
+                        socket.emit('new room','');
+                    }
                 });
             });
             

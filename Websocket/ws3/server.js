@@ -7,7 +7,7 @@ var request = require('request');
 var bodyParser     =        require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+var new_room=false;
 
 
 var crypto = require('crypto'),
@@ -70,13 +70,18 @@ app.post('/:roomName', function(req, res){
     var pass=req.body.roomPass;
     console.log(chatRooms[roomName]);
     
-    if(chatRooms[roomName]!=null){
+    if(chatRooms[roomName]==null ){
         chatRooms[roomName]=pass;
         RoomUsers[roomName]={};
         RoomLog[roomName]=[];
         console.log('created room');
+        //new_room=true;
     }
-    
+    /*if(new_room){
+        //redirect
+        res.writeHead(302,{'Location':'/'+roomName})
+        return res.end();
+    }*/
     if(pass.localeCompare(chatRooms[roomName])==0){
         res.sendFile(__dirname + '/chat.html');
     }
@@ -103,10 +108,21 @@ io.on('connection', function(socket){
     //clients.push(socket.id);
     setInterval(function(){socket.emit('date',new Date())},1000);
     
+    /*if(new_room){
+        io.emit('give me rooms',RoomsNamesToCSV());
+        new_room=false;
+    }*/
+    
+    
+    
     socket.on('message', function (msg) {
         console.log(msg);
         io.emit('message',msg);
     }); 
+    socket.on('new room',function(){
+        io.emit('give me rooms',RoomsNamesToCSV());
+    });
+    
     socket.on('give me rooms',function(){
         socket.emit('give me rooms',RoomsNamesToCSV());
     });
