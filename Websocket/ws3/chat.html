@@ -17,11 +17,21 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         var str='';
-        
+        var myroom=window.location.pathname.split('/')[1];
         function Start(){
 
             var socket = io();
-
+            
+            //connection
+            //alert(window.location.pathname);
+            socket.emit('insert user in chat',myroom);
+            
+            socket.on('insert user in chat',function(msg){
+                str+=msg+'\n';
+                $('#messages').html(str);
+            });
+            
+            
             socket.on('date', function(msg){
               $('#print').html(msg);
 
@@ -32,7 +42,7 @@
                 $('#messages').html(str);
             });  
             $('#Send').click(function(){
-                socket.emit('message',$('#name').val()+': '+$('#message').val());
+                socket.emit('message',myroom+'$#/$'+$('#name').val()+': '+$('#message').val());
                 $('#message').val('');
 
             });

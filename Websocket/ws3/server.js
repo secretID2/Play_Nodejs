@@ -59,9 +59,11 @@ app.post('/:roomName', function(req, res){
     
     if(chatRooms[roomName]==null ){
         chatRooms[roomName]=pass;
-        RoomUsers[roomName]={};
-        RoomLog[roomName]=[];
-        console.log('created room');
+        var users={};
+        RoomUsers[roomName]=users;
+        var log=[];
+        RoomLog[roomName]=log;
+        console.log('created room:'+roomName);
         
     }
     
@@ -78,11 +80,28 @@ app.post('/:roomName', function(req, res){
 io.on('connection', function(socket){
     console.log("Connected to websocket:"+socket.id); 
     setInterval(function(){socket.emit('date',new Date())},1000);
-    
-    socket.on('message', function (msg) {
-        console.log(msg);
-        io.emit('message',msg);
+    //chat.html
+    socket.on('insert user in chat', function (msg) {
+        var room=msg;
+        console.log('inserting new user:'+socket.id+' in room:'+room);
+        //in RoomUsers there is a a dictionary
+        var users=RoomUsers[room];
+        console.log('teste:'+ users);
+        users[socket.id]=socket;
+        socket.emit('insert user in chat','Connected');
     }); 
+    socket.on('message', function (msg) {
+        //console.log(msg);
+        //io.emit('message',msg);
+        var room=msg.split('$#/$')[0];
+        var real_msg=msg.split('$#/$')[1];
+        var room_users=RoomUsers[room];
+        for(socket_id in room_users){
+            //room_users value are the users respective socket
+            room_users[socket_id].emit('message',real_msg);
+        }
+    }); 
+    //index.html
     socket.on('new room',function(){
         console.log('Someone created new room');
         setTimeout(function(){io.emit('give me rooms',RoomsNamesToCSV())},1000);
