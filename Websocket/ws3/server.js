@@ -89,6 +89,16 @@ io.on('connection', function(socket){
         console.log('teste:'+ users);
         users[socket.id]=socket;
         socket.emit('insert user in chat','Connected');
+        if(RoomLog[room]!=null){
+                var room_users=RoomUsers[room];
+                for(socket_id in room_users){
+                    //room_users value are the users respective socket
+                    var log=RoomLog[room];
+                    for(i=0;i<log.length;i++){
+                        room_users[socket_id].emit('message',log[i]);
+                    }
+                }
+        }
     }); 
     socket.on('message', function (msg) {
         //console.log(msg);
@@ -98,6 +108,8 @@ io.on('connection', function(socket){
         var room_users=RoomUsers[room];
         for(socket_id in room_users){
             //room_users value are the users respective socket
+            var log=RoomLog[room];
+            log.push(real_msg);
             room_users[socket_id].emit('message',real_msg);
         }
     }); 
