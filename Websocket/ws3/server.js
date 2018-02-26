@@ -15,7 +15,7 @@ app.use(bodyParser.json());
     password = 'd6F3Efeq';*/
 
 //global vars
-var chatRooms={'1':'123','2w':'222'};
+var chatRooms={};
 var RoomUsers={};
 var RoomLog={};
 
@@ -74,7 +74,7 @@ app.post('/:roomName', function(req, res){
         res.writeHead(200);
         return res.end("Access denied"); 
     }
- 
+
 });
 
 io.on('connection', function(socket){
