@@ -126,6 +126,7 @@ io.on('connection', function(socket){
     //io.sockets.connected[clients[1]].emit("chat message", "Hey there, User 2");
     socket.on('disconnect', function () {
         console.log('Disconnected:'+socket.id);
+        //tirar user da RoomUsers e de outros sitios
     });    
 });
 
