@@ -46,16 +46,19 @@
             
             socket.on('give me rooms',function(msg){
                 console.log('SErver send me a message->'+msg);
-                roomNames=msg.split('\t');var out='';
-                roomNames.forEach(function(room_name){
-                    out+='<form action="/'+room_name+'" method="post">';
-                    
-                    out+='<input name="roomName" value="'+room_name+'" type="text" readonly/>'
-                    out+='Password:<input name="roomPass"  type="password" />'
-                    out+='<br><input value="Enter ChatRoom->'+room_name+'" type="submit" /><br><br>'
-                    out+='</form><br>'
-                });
-                document.getElementById('ChatRooms').innerHTML=out;
+				if(msg!=''){
+				
+					roomNames=msg.split('\t');var out='';
+					roomNames.forEach(function(room_name){
+						out+='<form action="/'+room_name+'" method="post">';
+						
+						out+='<input name="roomName" value="'+room_name+'" type="text" readonly/>'
+						out+='Password:<input name="roomPass"  type="password" />'
+						out+='<br><input value="Enter ChatRoom->'+room_name+'" type="submit" /><br><br>'
+						out+='</form><br>'
+					});
+					document.getElementById('ChatRooms').innerHTML=out;
+				}
             });
             
             
