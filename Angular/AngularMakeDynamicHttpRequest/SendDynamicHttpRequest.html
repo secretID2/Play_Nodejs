@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html >
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<body ng-app="myApp">
+
+<div  ng-controller="myCtrl">
+ 
+<p value={{roomName}}></p>
+<p>RoomName : <input type="text" id="roomName" name="roomName" ng-model="roomName" placeholder="Enter name here"></p>
+
+<h1>Hello {{roomName}}</h1>
+
+  Method<br>
+  <input type="text" ng-model="method">
+  <br>
+  To what Page?<br>
+  <input type="text" ng-model="page">
+  <br>
+  {{method}} Output:<br>
+  <input type="text" ng-model="output">
+  <br><br>
+  <input type="submit" value="Submit" ng-click="Send()">
+
+  <p>{{hi}}<p>
+
+</div>
+<script>
+	
+	
+	/*var app=angular.module('myApp', []);
+	app.controller('myCtrl', ['$scope', function($scope) {
+		$scope.count = 0;
+		$scope.myFunc = function() {
+		  $scope.count++;
+		};
+	}]);*/
+	
+	var app=angular.module('myApp', []);
+	app.controller('myCtrl', ['$scope', function($scope) {
+		/*$scope.hi='';
+		$scope.Send=function(){
+			$scope.hi+=$scope.method+$scope.page+$scope.output;
+		}*/
+		$scope.hi;
+		$scope.Send=function(){
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				  
+					$scope.hi=this.responseText;
+				}
+			};
+			  xhttp.open($scope.method, $scope.page, true);
+			  xhttp.send($scope.output);
+		}
+	}]);
+	
+	
+	
+	/*var app = angular.module("myApp", []);
+	app.controller("myCtrl", function($scope) {
+		//$scope.firstName = "John";
+		//$scope.lastName = "Doe";
+		$scope.Send=function(){
+			$.ajax({
+				type: $scope.method,
+				// make sure you respect the same origin policy with this url:
+				// http://en.wikipedia.org/wiki/Same_origin_policy
+				url: $scope.page,
+				data: { 
+					$scope.output
+				},
+				success: function(msg){
+					alert('wow' + msg);
+				}
+			});
+		}
+	});*/
+
+	
+
+</script>
+
+</body>
+</html>
