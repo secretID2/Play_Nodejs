@@ -53,9 +53,19 @@
 			};
 			  xhttp.open($scope.method, $scope.page, true);
 			  xhttp.send($scope.output);
-           /*$.get($scope.page, function(data, status){
-                alert("Data: " + data + "\nStatus: " + status);
-            });*/
+           /*$.ajax({
+                type: $scope.method,
+                url: $scope.page,
+                crossDomain: true,
+                data: $scope.output,//'{key1:something,key2:something2}'
+                
+                success: function(responseData, textStatus, jqXHR) {
+                    $scope.hi = responseData;
+                },
+                error: function (responseData, textStatus, errorThrown) {
+                    alert('POST failed.');
+                }
+           });*/
 		}
 	}]);
 	
