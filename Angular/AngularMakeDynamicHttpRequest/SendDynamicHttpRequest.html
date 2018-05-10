@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <body ng-app="myApp">
 
 <div  ng-controller="myCtrl">
@@ -44,7 +44,7 @@
 		}*/
 		$scope.hi;
 		$scope.Send=function(){
-			var xhttp = new XMLHttpRequest();
+			/*var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 				  
@@ -52,20 +52,25 @@
 				}
 			};
 			  xhttp.open($scope.method, $scope.page, true);
-			  xhttp.send($scope.output);
-           /*$.ajax({
+			  xhttp.send($scope.output);*/
+           $.ajax({
                 type: $scope.method,
                 url: $scope.page,
                 crossDomain: true,
+                //dataType: 'jsonp',
                 data: $scope.output,//'{key1:something,key2:something2}'
-                
+                //'Access-Control-Allow-Origin': '*',
+                //'Content-type':'text/html; charset=UTF-8',
                 success: function(responseData, textStatus, jqXHR) {
                     $scope.hi = responseData;
+                    console.log(responseData);
                 },
                 error: function (responseData, textStatus, errorThrown) {
                     alert('POST failed.');
+                    console.log(errorThrown);
+                    
                 }
-           });*/
+           });
 		}
 	}]);
 	
